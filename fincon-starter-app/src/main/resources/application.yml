@@ -1,0 +1,10 @@
+eu:
+  fincon:
+    starter:
+      number: 999
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost/test
+    username: postgres
+    password: postgres
