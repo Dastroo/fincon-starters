@@ -12,9 +12,9 @@ public class MyController {
     @Autowired
     ExampleStarterService exampleStarterService;
 
-  @GetMapping("/")
-  @LogMethodExecutionTime
-  public String helloWorld() {
+    @GetMapping("/")
+    @LogMethodExecutionTime
+    public String helloWorld() {
         return exampleStarterService.helloWorld();
     }
 }
