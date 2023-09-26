@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   logicalFilePath="db-properties.xml"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="system" id="sequences">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet author="system" id="Table operation_history">
+        <createTable tableName="operation_history">
+            <column name="id" type="${id}"/>
+            <column name="versionid" type="${id}"/>
+            <column name="create_date" type="${timestamp} not null"/>
+            <column name="operation" type="${stringnn}"/>
+            <column name="params" type="${string}"/>
+        </createTable>
+        <addPrimaryKey columnNames="id" tableName="operation_history"/>
+    </changeSet>
+
+</databaseChangeLog>

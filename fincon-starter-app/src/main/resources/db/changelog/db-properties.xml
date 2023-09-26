@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   logicalFilePath="db-properties.xml"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <property name="now" value="now()"/>
+    <property name="hibernate_sequence" value="nextval('hibernate_sequence')"/>
+
+    <!-- Data types -->
+    <property name="id" value="bigint not null"/>
+    <property name="id_nullable" value="bigint"/>
+    <property name="int" value="int"/>
+    <property name="stringnn" value="varchar(255) not null"/>
+    <property name="string" value="varchar(255)"/>
+    <property name="string1" value="varchar(1)"/>
+    <property name="string2" value="varchar(2)"/>
+    <property name="string3" value="varchar(3)"/>
+    <property name="string8" value="varchar(8)"/>
+    <property name="string32" value="varchar(32)"/>
+    <property name="string4k" value="varchar(4000)"/>
+    <property name="bigdecimal" value="numeric(19,2)"/>
+    <property name="timestamp" value="timestamp without timezone"/>
+
+</databaseChangeLog>

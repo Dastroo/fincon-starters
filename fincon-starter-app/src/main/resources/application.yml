@@ -8,3 +8,6 @@ spring:
     url: jdbc:postgresql://localhost/test
     username: postgres
     password: postgres
+  jpa:
+    database:
+      platform: org.hibernate.dialect.PostgreSQLDialect
