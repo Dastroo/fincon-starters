@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {Constans} from "./config/constans";
 import {MathApiService, MultiplyResponse} from "./core/services/math-api.service";
+import {environment} from "../environments/environment";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   valueToMultiplyResultFromApi!: number;
 
   constructor(private mathService: MathApiService) {
-    console.log('API: ' + Constans.API_ENDPOINT);
+    console.log('API: ' + environment.apiURL);
   }
 
   ngOnInit() {
