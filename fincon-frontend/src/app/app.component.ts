@@ -1,17 +1,33 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Constans} from "./config/constans";
+import {MathApiService, MultiplyResponse} from "./core/services/math-api.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'fincon-frontend';
-  valueToDouble = 12;
-  valueToDoubleResult = 0;
-  valueToMultiplyA = 12;
-  valueToMultiplyB = 18;
-  valueToMultiplyResult = 0;
+  valueToDouble!: number;
+  valueToDoubleResult!: number;
+  valueToDoubleResultFromApi!: number;
+  valueToMultiplyA!: number;
+  valueToMultiplyB!: number;
+  valueToMultiplyResult!: number;
+  valueToMultiplyResultFromApi!: number;
+
+  constructor(private mathService: MathApiService) {
+    console.log('API: ' + Constans.API_ENDPOINT);
+  }
+
+  ngOnInit() {
+    this.valueToDouble = this.randomInt(1, 100);
+    this.valueToMultiplyA = this.randomInt(1, 100);
+    this.valueToMultiplyB = this.randomInt(1, 100);
+  }
+
+  randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
 
   double = (value: number) => 2 * value;
 
@@ -19,9 +35,15 @@ export class AppComponent {
 
   doubleValue = (value: number) => {
     this.valueToDoubleResult = this.double(value);
+    this.mathService.double(value).subscribe(data => {
+      this.valueToDoubleResultFromApi = data
+    });
   }
 
   multiplyValues = (a: number, b: number) => {
     this.valueToMultiplyResult = this.multiply(a, b);
+    this.mathService.multiply(a, b).subscribe((data: MultiplyResponse) => {
+      this.valueToMultiplyResultFromApi = data.result
+    })
   }
 }

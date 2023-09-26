@@ -333,7 +333,7 @@
     <button class="card card-small" (click)="doubleValue(valueToDouble)">
       <span>Double value</span>
     </button>
-    <span>JS: {{ valueToDoubleResult }}, API: {{ valueToDoubleResult }}</span>
+    <span>JS: {{ valueToDoubleResult }}, API: {{ valueToDoubleResultFromApi }}</span>
   </div>
 
   <div class="card-container">
@@ -342,7 +342,7 @@
     <button class="card card-small" (click)="multiplyValues(valueToMultiplyA, valueToMultiplyB)">
       <span>Multiply values</span>
     </button>
-    <span>JS: {{ valueToMultiplyResult }}, API: {{ valueToMultiplyResult }}</span>
+    <span>JS: {{ valueToMultiplyResult }}, API: {{ valueToMultiplyResultFromApi }}</span>
   </div>
 
 <router-outlet></router-outlet>
