@@ -1,0 +1,127 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: math
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: math
+  name: deployment-math-db
+spec:
+  selector:
+    matchLabels:
+      name: app-math
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: app-math
+    spec:
+      containers:
+        - image: postgres:15.4-alpine
+          imagePullPolicy: Always
+          name: app-math-db
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: postgres
+            - name: POSTGRES_DB
+              value: test
+            - name: TZ
+              value: Poland
+            - name: PGTZ
+              value: Poland
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: math
+  name: deployment-math
+spec:
+  selector:
+    matchLabels:
+      name: app-math
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: app-math
+    spec:
+      containers:
+        - image: finconreply/fincon-starter-app:latest
+          imagePullPolicy: Always
+          name: app-math
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://service-math-db/test
+            - name: SPRING_JPA_DATABASE_PLATFORM
+              value: org.hibernate.dialect.PostgreSQLDialect
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: math
+  name: deployment-math-frontend
+spec:
+  selector:
+    matchLabels:
+      name: app-math
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: app-math
+    spec:
+      containers:
+        - image: finconreply/fincon-frontend:latest
+          imagePullPolicy: Always
+          name: app-math
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: math
+  name: service-math-db
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    name: app-math
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: math
+  name: service-math
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    name: app-math
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: math
+  name: service-math-frontend
+spec:
+  ports:
+    - port: 9090
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    name: app-math
