@@ -4,6 +4,14 @@ kind: Namespace
 metadata:
   name: math
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+data:
+  DB_URL: jdbc:postgresql://db/test
+  DB_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -62,9 +70,15 @@ spec:
             - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://db/test
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_URL
             - name: SPRING_JPA_DATABASE_PLATFORM
-              value: org.hibernate.dialect.PostgreSQLDialect
+              valueFrom:
+                configMapKeyRef:
+                  name: backend-config
+                  key: DB_DIALECT
 ---
 apiVersion: apps/v1
 kind: Deployment
