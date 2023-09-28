@@ -70,17 +70,17 @@ export class AppComponent implements OnInit {
   }
 
   runCommand = (operation: string, params: string) => {
-    if (operation.startsWith('/math/double')) {
-      let value = Number(operation.split('/').at(-1));
-      this.valueToDouble = value;
-      this.doubleValue(this.valueToDouble);
-    }
-
-    if (operation.startsWith('/math/multiply')) {
-      let values = params.split(',');
-      this.valueToMultiplyA = Number(values[0]);
-      this.valueToMultiplyB = Number(values[1]);
-      this.multiplyValues(this.valueToMultiplyA, this.valueToMultiplyB);
+    switch (operation) {
+      case MathApiService.OPERATION_DOUBLE:
+        this.valueToDouble = Number(params);
+        this.doubleValue(this.valueToDouble);
+        break;
+      case MathApiService.OPERATION_MULTIPLY:
+        let values = params.split(',');
+        this.valueToMultiplyA = Number(values[0]);
+        this.valueToMultiplyB = Number(values[1]);
+        this.multiplyValues(this.valueToMultiplyA, this.valueToMultiplyB);
+        break;
     }
   }
 }

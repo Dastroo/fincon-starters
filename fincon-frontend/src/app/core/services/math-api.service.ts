@@ -11,12 +11,15 @@ export interface MultiplyResponse {
 @Injectable()
 export class MathApiService {
 
+  static OPERATION_DOUBLE = '/math/double';
+  static OPERATION_MULTIPLY = '/math/multiply';
+
   constructor(private http: HttpClient) {
   }
 
-  double = (value: number) => this.http.get<number>(environment.apiURL + '/math/double/' + value);
+  double = (value: number) => this.http.get<number>(environment.apiURL + MathApiService.OPERATION_DOUBLE + '/' + value);
 
-  multiply = (a: number, b: number) => this.http.post<MultiplyResponse>(environment.apiURL + '/math/multiply', {
+  multiply = (a: number, b: number) => this.http.post<MultiplyResponse>(environment.apiURL + MathApiService.OPERATION_MULTIPLY, {
     a,
     b
   });
