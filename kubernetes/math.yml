@@ -164,6 +164,7 @@ spec:
     - port: 8080
       targetPort: 8080
       protocol: TCP
+  type: NodePort
 ---
 apiVersion: v1
 kind: Service
@@ -175,11 +176,7 @@ spec:
     app: math
     tier: frontend
   ports:
-    - port: 9090
+    - port: 8081
       targetPort: 80
       protocol: TCP
-  #  type: LoadBalancer
-  #  externalTrafficPolicy: Local
-  #  externalIPs:
-  #    - 172.25.223.64
   type: NodePort
