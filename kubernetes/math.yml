@@ -133,6 +133,9 @@ spec:
           name: app-math
           ports:
             - containerPort: 80
+              hostPort: 9890
+              name: 80tcp98900
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
@@ -175,7 +178,8 @@ spec:
     - port: 9090
       targetPort: 80
       protocol: TCP
-  type: LoadBalancer
-  externalIPs:
-    - 172.25.223.64
-#  type: NodePort
+  #  type: LoadBalancer
+  #  externalTrafficPolicy: Local
+  #  externalIPs:
+  #    - 172.25.223.64
+  type: NodePort
