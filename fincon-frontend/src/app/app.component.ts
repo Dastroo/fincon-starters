@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MathApiService, MultiplyResponse} from "./core/services/math-api.service";
 import {environment} from "../environments/environment";
+import {OperationHistoryService, PageableResponse} from "./core/services/operation-history-api.service";
 
 @Component({
   selector: 'app-root',
@@ -16,18 +17,37 @@ export class AppComponent implements OnInit {
   valueToMultiplyB!: number;
   valueToMultiplyResult!: number;
   valueToMultiplyResultFromApi!: number;
+  operationHistory: PageableResponse = {
+    content: [],
+    totalPages: 0,
+    totalElements: 0,
+    number: 0,
+    size: 0
+  };
 
-  constructor(private mathService: MathApiService) {
+  constructor(private mathService: MathApiService, private operationHistoryService: OperationHistoryService) {
     console.log('API: ' + environment.apiURL);
   }
 
   ngOnInit() {
-    this.valueToDouble = this.randomInt(1, 100);
-    this.valueToMultiplyA = this.randomInt(1, 100);
-    this.valueToMultiplyB = this.randomInt(1, 100);
+    this.init();
   }
 
   randomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
+
+  init = () => {
+    this.valueToDouble = this.randomInt(1, 100);
+    this.valueToMultiplyA = this.randomInt(1, 100);
+    this.valueToMultiplyB = this.randomInt(1, 100);
+
+    this.refreshOperationHistory();
+  }
+
+  refreshOperationHistory = () => {
+    this.operationHistoryService.findAll().subscribe((data: PageableResponse) => {
+      this.operationHistory = data;
+    })
+  }
 
   double = (value: number) => 2 * value;
 
@@ -36,14 +56,31 @@ export class AppComponent implements OnInit {
   doubleValue = (value: number) => {
     this.valueToDoubleResult = this.double(value);
     this.mathService.double(value).subscribe(data => {
-      this.valueToDoubleResultFromApi = data
+      this.valueToDoubleResultFromApi = data;
+      this.refreshOperationHistory();
     });
   }
 
   multiplyValues = (a: number, b: number) => {
     this.valueToMultiplyResult = this.multiply(a, b);
     this.mathService.multiply(a, b).subscribe((data: MultiplyResponse) => {
-      this.valueToMultiplyResultFromApi = data.result
+      this.valueToMultiplyResultFromApi = data.result;
+      this.refreshOperationHistory();
     })
+  }
+
+  runCommand = (operation: string, params: string) => {
+    if (operation.startsWith('/math/double')) {
+      let value = Number(operation.split('/').at(-1));
+      this.valueToDouble = value;
+      this.doubleValue(this.valueToDouble);
+    }
+
+    if (operation.startsWith('/math/multiply')) {
+      let values = params.split(',');
+      this.valueToMultiplyA = Number(values[0]);
+      this.valueToMultiplyB = Number(values[1]);
+      this.multiplyValues(this.valueToMultiplyA, this.valueToMultiplyB);
+    }
   }
 }

@@ -308,7 +308,8 @@
   <!-- Highlight Card -->
   <div class="card highlight-card card-small">
 
-    <svg id="rocket" xmlns="http://www.w3.org/2000/svg" width="101.678" height="101.678" viewBox="0 0 101.678 101.678">
+    <svg (click)="init()" height="101.678" id="rocket" viewBox="0 0 101.678 101.678" width="101.678"
+         xmlns="http://www.w3.org/2000/svg">
       <title>Rocket Ship</title>
       <g id="Group_83" data-name="Group 83" transform="translate(-141 -696)">
         <circle id="Ellipse_8" data-name="Ellipse 8" cx="50.839" cy="50.839" r="50.839" transform="translate(141 696)" fill="#dd0031"/>
@@ -343,6 +344,33 @@
       <span>Multiply values</span>
     </button>
     <span>JS: {{ valueToMultiplyResult }}, API: {{ valueToMultiplyResultFromApi }}</span>
+  </div>
+
+  <div class="card-container">
+    <h3>Historia operacji</h3>
+    <table border="1" cellpadding="5">
+      <thead>
+      <tr>
+        <td>Data</td>
+        <td>Operacja</td>
+        <td>Parametry</td>
+        <td>Uruchom</td>
+      </tr>
+      </thead>
+      <tr *ngFor="let item of operationHistory.content">
+        <td>{{ item.createDate }}</td>
+        <td>{{ item.operation }}</td>
+        <td>{{ item.params }}</td>
+        <td>
+          <svg (click)="runCommand(item.operation, item.params)" class="pointer" height="32px"
+               style="enable-background:new 0 0 32 32;" version="1.1" viewBox="0 0 32 32" width="32px"
+               xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+            <g id="Layer_1"/>
+            <g id="play_x5F_alt"><path d="M16,0C7.164,0,0,7.164,0,16s7.164,16,16,16s16-7.164,16-16S24.836,0,16,0z M10,24V8l16.008,8L10,24z   " style="fill:#4E4E50;"/></g>
+          </svg>
+        </td>
+      </tr>
+    </table>
   </div>
 
 <router-outlet></router-outlet>

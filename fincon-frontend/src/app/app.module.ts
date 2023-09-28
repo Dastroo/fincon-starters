@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MathApiService} from "./core/services/math-api.service";
+import {OperationHistoryService} from "./core/services/operation-history-api.service";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import {MathApiService} from "./core/services/math-api.service";
     AppRoutingModule,
     FormsModule,
   ],
-  providers: [MathApiService],
+  providers: [MathApiService, OperationHistoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
