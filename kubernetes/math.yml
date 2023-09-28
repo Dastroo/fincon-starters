@@ -12,24 +12,24 @@ metadata:
 data:
   DB_PASSWORD: postgres
   DB_NAME: test
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: math
-  name: backend-config
-data:
-  application.yml: |
-    eu:
-      fincon:
-        starter:
-          number: 998
-    spring:
-      datasource:
-        url: jdbc:postgresql://db/test
-      jpa:
-        database:
-          platform: org.hibernate.dialect.PostgreSQLDialect
+#---
+#apiVersion: v1
+#kind: ConfigMap
+#metadata:
+#  namespace: math
+#  name: backend-config
+#data:
+#  application.yml: |
+#    eu:
+#      fincon:
+#        starter:
+#          number: 998
+#    spring:
+#      datasource:
+#        url: jdbc:postgresql://db/test
+#      jpa:
+#        database:
+#          platform: org.hibernate.dialect.PostgreSQLDialect
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -93,17 +93,22 @@ spec:
           name: app-math
           ports:
             - containerPort: 8080
-          volumeMounts:
-            - mountPath: /workspace/BOOT-INF/classes/
-              readOnly: true
-              name: app-conf
-      volumes:
-        - name: app-conf
-          configMap:
-            name: backend-config
-            items:
-              - key: application.yml
-                path: application.yml
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://db/test
+            - name: SPRING_JPA_DATABASE_PLATFORM
+              value: org.hibernate.dialect.PostgreSQLDialect
+#          volumeMounts:
+#            - mountPath: /workspace/BOOT-INF/classes/
+#              readOnly: true
+#              name: app-conf
+#      volumes:
+#        - name: app-conf
+#          configMap:
+#            name: backend-config
+#            items:
+#              - key: application.yml
+#                path: application.yml
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -128,6 +133,9 @@ spec:
           name: app-math
           ports:
             - containerPort: 80
+              hostPort: 9890
+              name: 80tcp98900
+              protocol: TCP
 ---
 apiVersion: v1
 kind: Service
@@ -170,7 +178,8 @@ spec:
     - port: 9090
       targetPort: 80
       protocol: TCP
-  type: LoadBalancer
-  externalIPs:
-    - 172.25.223.64
-#  type: NodePort
+  #  type: LoadBalancer
+  #  externalTrafficPolicy: Local
+  #  externalIPs:
+  #    - 172.25.223.64
+  type: NodePort
