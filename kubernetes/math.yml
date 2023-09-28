@@ -5,6 +5,35 @@ metadata:
   name: math
 ---
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-db
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/volumes/db"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: math
+  name: pv-claim-db
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  volumeName: pv-db
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: math
@@ -55,6 +84,9 @@ spec:
           ports:
             - containerPort: 5432
               hostPort: 9432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: pgdatavol
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
@@ -70,6 +102,10 @@ spec:
               value: Poland
             - name: PGTZ
               value: Poland
+      volumes:
+        - name: pgdatavol
+          persistentVolumeClaim:
+            claimName: pv-claim-db
 ---
 apiVersion: apps/v1
 kind: Deployment
