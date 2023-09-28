@@ -81,7 +81,7 @@ spec:
     matchLabels:
       app: math
       tier: backend
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
