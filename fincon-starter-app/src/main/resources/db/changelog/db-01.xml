@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   logicalFilePath="db-properties.xml"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="kk" id="Change operation history syntax">
+        <update tableName="operation_history">
+            <column name="operation" value="/math/double"/>
+            <column name="params" valueComputed="reverse(split_part(reverse(operation), '/', 1))"/>
+            <where>operation like '/math/double/%'</where>
+        </update>
+    </changeSet>
+
+</databaseChangeLog>

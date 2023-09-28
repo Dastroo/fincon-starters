@@ -20,7 +20,8 @@ public class MathApiServiceImpl implements MathApiService {
     operationHistoryService.save(
         OperationHistory.builder()
             .createDate(LocalDateTime.now())
-            .operation("/math/double/" + value)
+            .operation("/math/double")
+            .params(value.toString())
             .build());
     return 2 * value;
   }

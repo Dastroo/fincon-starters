@@ -3,3 +3,4 @@ databaseChangeLog:
       file: db/changelog/db-properties.xml
   - include:
       file: db/changelog/db-structure.xml
+      file: db/changelog/db-01.xml
