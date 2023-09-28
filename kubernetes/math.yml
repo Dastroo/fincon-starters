@@ -54,6 +54,7 @@ spec:
           name: app-math-db
           ports:
             - containerPort: 5432
+              hostPort: 9432
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
