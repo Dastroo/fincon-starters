@@ -15,11 +15,12 @@ public class OperationHistoryTest extends BaseTest {
   @Test
   void myFirstTest() {
     // Given
-    operationHistoryService.save(
-        OperationHistory.builder().id(1L).operation("/foo").params("bar").build());
+    OperationHistory oh =
+        operationHistoryService.save(
+            OperationHistory.builder().operation("/foo").params("bar").build());
 
     // When
-    OperationHistory operationHistory = operationHistoryService.findOne(1L).orElseThrow();
+    OperationHistory operationHistory = operationHistoryService.findOne(oh.getId()).orElseThrow();
 
     // Then
     assertEquals("/foo", operationHistory.getOperation());
